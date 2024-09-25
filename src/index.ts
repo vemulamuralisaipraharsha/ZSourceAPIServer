@@ -12,11 +12,9 @@ app.get("/api/v1/posts", async (req: any, res: any) => {
     const {flag, data} = req.query;
     try {
         if(flag == "CREATE") {
-            const createResponse = await axios.get('/api/v1/posts/create', {
-                data
-            });
-
-            res.json(JSON.stringify({createResponse}));
+            console.log(data);
+            const createResponse = await axios.get(`http://zsourcecreatelb-1488043897.eu-north-1.elb.amazonaws.com/api/v1/posts/create?data=${data}`); 
+            res.json(createResponse.data);
         } else if(flag == "READ") {
             const readResponse = await axios.get('/api/v1/posts/read', {
                 data
