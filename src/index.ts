@@ -1,6 +1,9 @@
 const express: any = require('express');
 const axios = require('axios');
-var bodyParser = require('body-parser')
+const dotenv = require('dotenv');
+var bodyParser = require('body-parser');
+
+dotenv.config();
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,10 +16,10 @@ app.get("/api/v1/posts", async (req: any, res: any) => {
     try {
         if(flag == "CREATE") {
             console.log(data);
-            const createResponse = await axios.get(`http://zsourcecreatelb-1488043897.eu-north-1.elb.amazonaws.com/api/v1/posts/create?data=${data}`); 
+            const createResponse = await axios.get(`${process.env.ZSOURCE_CREATE_SERVER_URI}/api/v1/posts/create?data=${data}`); 
             res.json(createResponse.data);
         } else if(flag == "READ") {
-            const readResponse = await axios.get('/api/v1/posts/read', {
+            const readResponse = await axios.get(`${process.env.ZSOURCE_READ_SERVER_URI}/api/v1/posts/read`, {
                 data
             });
             res.json(JSON.stringify({readResponse}));
